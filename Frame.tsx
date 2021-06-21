@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 
-import { hostDocument, embedFrame, removeNode, findNode } from './utils';
+import { hostDocument, embedFrame, removeNode } from './utils';
 
 const getFrameHtml = () => `
 <!doctype html>
@@ -24,12 +24,7 @@ function createFrame({ title }: FrameProps) {
   frame.setAttribute('allowFullScreen', '');
   if (title) frame.setAttribute('title', title);
   const { parentElement } = embedFrame;
-  if (parentElement) {
-    const divider =
-      findNode(parentElement, (node) => node.nodeType === 8) ??
-      parentElement.firstChild;
-    if (divider) parentElement.insertBefore(frame, divider);
-  }
+  if (parentElement) parentElement.appendChild(frame);
   const doc = frame.contentDocument;
   if (doc) {
     doc.open('text/html', 'replace');
